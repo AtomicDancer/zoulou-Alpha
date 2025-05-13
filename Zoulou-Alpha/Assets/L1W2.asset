@@ -16,16 +16,9 @@ MonoBehaviour:
   - spawnerID: SpawnerUp
     timedSpawns:
     - enemyPrefab: {fileID: 668559143902179398, guid: 06bb800c6480d174da51750a0fa72177, type: 3}
-      delay: 0
+      delay: 10
+    loopSpawns:
     - enemyPrefab: {fileID: 668559143902179398, guid: 06bb800c6480d174da51750a0fa72177, type: 3}
-      delay: 1
-    - enemyPrefab: {fileID: 668559143902179398, guid: 06bb800c6480d174da51750a0fa72177, type: 3}
-      delay: 2
-  - spawnerID: SpawnerRight
-    timedSpawns:
-    - enemyPrefab: {fileID: 668559143902179398, guid: 06bb800c6480d174da51750a0fa72177, type: 3}
-      delay: 0
-    - enemyPrefab: {fileID: 668559143902179398, guid: 06bb800c6480d174da51750a0fa72177, type: 3}
-      delay: 1
-    - enemyPrefab: {fileID: 668559143902179398, guid: 06bb800c6480d174da51750a0fa72177, type: 3}
-      delay: 2
+      startTime: 0
+      delay: 0.1
+      count: 50
