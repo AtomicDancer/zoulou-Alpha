@@ -13,7 +13,10 @@ public class UnitGhost : MonoBehaviour
         {
             unitRange = dpsUnit.range;
         }
-
+        else
+        {
+            unitRange = 0f;
+        }
         rangeVisual = Instantiate(rangeVisualPrefab, transform);
         UpdateRangeVisual();
     }
@@ -36,7 +39,6 @@ public class UnitGhost : MonoBehaviour
             }
             else
             {
-                Debug.Log("Not enough money to place the unit.");
                 Destroy(gameObject); 
                 return;
             }
@@ -51,13 +53,11 @@ public class UnitGhost : MonoBehaviour
             }
             else
             {
-                Debug.Log("Not enough money to place the unit.");
                 Destroy(gameObject); 
                 return;
             }
         }
         {
-            Debug.Log("Not enough money to place the unit.");
             Destroy(gameObject); 
         }
     }

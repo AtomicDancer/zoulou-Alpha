@@ -1,10 +1,11 @@
 using UnityEngine;
-
+using TMPro;
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
     public int playerMoney = 100;
-
+    public TextMeshProUGUI moneyText;
+    
     private void Awake()
     {
         if (Instance == null)
@@ -15,6 +16,8 @@ public class GameManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
+        moneyText.text = playerMoney + " $";
     }
 
     public bool OnWaveStart()
@@ -24,7 +27,7 @@ public class GameManager : MonoBehaviour
     public void AddMoney(int amount)
     {
         playerMoney += amount;
-        Debug.Log("Money: " + playerMoney);
+        moneyText.text = playerMoney + " $";
     }
     
     public void SpendMoney(int amount)
@@ -32,7 +35,7 @@ public class GameManager : MonoBehaviour
         if (playerMoney >= amount)
         {
             playerMoney -= amount;
-            Debug.Log("Spent: " + amount + ", Remaining: " + playerMoney);
+            moneyText.text = playerMoney + " $";
         }
         else
         {

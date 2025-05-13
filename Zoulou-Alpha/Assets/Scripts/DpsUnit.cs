@@ -11,8 +11,13 @@ public class DpsUnit : BaseUnit
     public float attackCooldown = 1f;
     public AttackType attackType;
     public float coneAngle = 45f;
-
     private float timer;
+
+    void Start()
+    {
+        rangeVisualPrefab.SetActive(false);
+        rangeVisualPrefab.transform.localScale = new Vector3(range / 2.5f, 0.01f, range / 2.5f);
+    }
 
     void Update()
     {
@@ -40,8 +45,8 @@ public class DpsUnit : BaseUnit
                 foreach (var e in enemies)
                 {
                     Vector3 dir = (e.transform.position - transform.position).normalized;
-                    float angle = Vector3.Angle(transform.forward, dir);
-                    if (angle <= coneAngle / 2f)
+                    float angle = Vector3.SignedAngle(transform.forward, dir, Vector3.up);
+                    if (Mathf.Abs(angle) <= coneAngle)
                         e.TakeDamage(damage);
                 }
                 break;
@@ -58,6 +63,18 @@ public class DpsUnit : BaseUnit
                 break;
         }
         Debug.Log($"Attacked {enemies.Count} enemies in range.");
+    }
+
+    public void ShowStats()
+    {
+        rangeVisualPrefab.SetActive(true);
+        //Add Stats Canvas
+    }
+
+    public void HideStats()
+    {
+        rangeVisualPrefab.SetActive(false);
+        //Remove Stats Canvas
     }
 
     List<EnemyBehaviour> GetEnemiesInRange()

@@ -19,7 +19,6 @@ public class WaveManager : MonoBehaviour
     {
         while (currentWave < waves.Count)
         {
-            GameManager.Instance.playerMoney += 100;
             WaveDataNew wave = waves[currentWave];
 
             if (wave.isHugeWave)

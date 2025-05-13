@@ -125,10 +125,11 @@ MonoBehaviour:
   unitName: Destroyer
   icon: {fileID: 21300002, guid: 358b5d9f23bc9413e87c9948acc67ee1, type: 3}
   cost: 100
+  rangeVisualPrefab: {fileID: 1010196707352916617}
   range: 40
-  damage: 2
+  damage: 10
   attackCooldown: 0.1
-  attackType: 2
+  attackType: 0
   coneAngle: 45
 --- !u!1001 &8040892176736643682
 PrefabInstance:
@@ -182,11 +183,20 @@ PrefabInstance:
       propertyPath: m_Name
       value: RangePreview
       objectReference: {fileID: 0}
+    - target: {fileID: 7030695542935050475, guid: 06c39b8bf2bd3c344a19a4f0c21e627c, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 06c39b8bf2bd3c344a19a4f0c21e627c, type: 3}
+--- !u!1 &1010196707352916617 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7030695542935050475, guid: 06c39b8bf2bd3c344a19a4f0c21e627c, type: 3}
+  m_PrefabInstance: {fileID: 8040892176736643682}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &8157063371916338079 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2208251723921132029, guid: 06c39b8bf2bd3c344a19a4f0c21e627c, type: 3}
