@@ -5,7 +5,6 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance;
     public int playerMoney = 100;
     public TextMeshProUGUI moneyText;
-    
     private void Awake()
     {
         if (Instance == null)

@@ -41,7 +41,6 @@ public class UnitDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, I
                 else if (hit.collider.TryGetComponent(out FarmUnit farm))
                     farm.ShowStats();
             }
-        
         }
     }
 

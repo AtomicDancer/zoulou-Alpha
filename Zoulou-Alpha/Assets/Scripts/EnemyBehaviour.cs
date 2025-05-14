@@ -2,41 +2,47 @@ using UnityEngine;
 
 public class EnemyBehaviour : MonoBehaviour
 {
-
+    public WaypointPath path; // Assigned when spawned
     public float speed = 5f; // Speed of the enemy
     public int stocksDamage = 1; // Damage inflicted by the enemy
     public int health = 1; // Health of the enemy
-    public Transform target; // Target to follow
-
-
-    void Start()
-    {
-        target = FindTargetInFront();
-    }
+    private int currentWaypointIndex = 0;
 
     void Update()
     {
-        if (target != null)
+        if (path == null || currentWaypointIndex >= path.WaypointCount)
+            return;
+
+        Transform targetWaypoint = path.GetWaypoint(currentWaypointIndex);
+        Vector3 direction = (targetWaypoint.position - transform.position).normalized;
+
+        transform.position += direction * speed * Time.deltaTime;
+        transform.LookAt(targetWaypoint); 
+
+        float distance = Vector3.Distance(transform.position, targetWaypoint.position);
+        if (distance < 0.1f)
         {
-            // Move towards the target
-            transform.position = Vector3.MoveTowards(transform.position, target.position, speed * Time.deltaTime);
-        }
-        if (transform.position == target.position)
-        {
-            Destroy(gameObject);
-            InflictDamage(stocksDamage, target.GetComponent<Collider>());
+            currentWaypointIndex++;
+            if (currentWaypointIndex >= path.WaypointCount)
+            {
+                OnReachDestination();
+            }
         }
     }
 
-    public void InflictDamage(int stocksDamage, Collider other)
+    void OnReachDestination()
     {
-        other.TryGetComponent(out WarpGate warpGate);
-        if (warpGate != null)
-        {
-            warpGate.TakeDamage(stocksDamage);
-            Destroy(gameObject); 
-            //Add Feedbacks
-        }
+        // Damage the warp gate or whatever chaos you wish
+        Debug.Log("Enemy reached the end!");
+        Destroy(gameObject);
+    }
+
+    public void InflictDamage(int stocksDamage)
+    {
+        WarpGate warpGate = FindFirstObjectByType<WarpGate>();
+        warpGate.TakeDamage(stocksDamage);
+        Destroy(gameObject); 
+        //Add Feedbacks
     }
 
     public void TakeDamage(int damage)
@@ -45,22 +51,8 @@ public class EnemyBehaviour : MonoBehaviour
         if (health <= 0)
         {
             Destroy(gameObject);
-            //Add Feedbacks
+            GameManager.Instance.AddMoney(50); 
         }
-    }
-
-    Transform FindTargetInFront()
-    {
-        RaycastHit hit;
-        if (Physics.Raycast(transform.position, transform.forward, out hit, Mathf.Infinity, LayerMask.GetMask("Water")))
-        {
-            if (hit.collider.CompareTag("WarpGate"))
-            {
-                target = hit.transform;
-                return target;
-            }
-        }
-        return null;
     }
 
 }
