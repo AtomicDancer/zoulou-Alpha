@@ -1,8 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
 
-public enum AttackType { FullAOE, Cone, Single }
+public enum AttackType { FullAOE, Single }
 
 public class DpsUnit : BaseUnit
 {
@@ -10,9 +11,8 @@ public class DpsUnit : BaseUnit
     public int damage = 10;
     public float attackCooldown = 1f;
     public AttackType attackType;
-    public float coneAngle = 45f;
     private float timer;
-
+    public LineRenderer singleAttackFx;
     void Start()
     {
         rangeVisualPrefab.SetActive(false);
@@ -41,16 +41,6 @@ public class DpsUnit : BaseUnit
                 foreach (var e in enemies) e.TakeDamage(damage);
                 break;
 
-            case AttackType.Cone:
-                foreach (var e in enemies)
-                {
-                    Vector3 dir = (e.transform.position - transform.position).normalized;
-                    float angle = Vector3.SignedAngle(transform.forward, dir, Vector3.up);
-                    if (Mathf.Abs(angle) <= coneAngle)
-                        e.TakeDamage(damage);
-                }
-                break;
-
             case AttackType.Single:
                 var target = enemies[0];
                 foreach (var e in enemies)
@@ -58,12 +48,17 @@ public class DpsUnit : BaseUnit
                     if (Vector3.Distance(transform.position, e.transform.position) < Vector3.Distance(transform.position, target.transform.position))
                         target = e;
                 }
+                // Create a line renderer effect for the single target attack
+                var attackFxInstance = Instantiate(singleAttackFx, transform.position, Quaternion.identity);
+                attackFxInstance.SetPosition(0, transform.position);
+                attackFxInstance.SetPosition(1, target.transform.position);
+                Destroy(attackFxInstance.gameObject, 0.2f);
                 target.TakeDamage(damage);
-                // Spawn Fx like a line renderer
+
                 break;
         }
-        Debug.Log($"Attacked {enemies.Count} enemies in range.");
     }
+
 
     public void ShowStats()
     {
