@@ -106,7 +106,7 @@ public class UnitDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, I
             // Background = valid placement
             if (hit.collider.gameObject.name == "Background")
             {
-                return hit.point + Vector3.up * 5;
+                return hit.point + Vector3.up * 10;
             }
 
             // Unit interactions

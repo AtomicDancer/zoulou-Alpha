@@ -16,7 +16,7 @@ public class DpsUnit : BaseUnit
     void Start()
     {
         rangeVisualPrefab.SetActive(false);
-        rangeVisualPrefab.transform.localScale = new Vector3(range / 2.5f, 0.01f, range / 2.5f);
+        rangeVisualPrefab.transform.localScale = new Vector3(range / 2.5f , 0.01f, range / 2.5f);
     }
 
     void Update()
@@ -33,6 +33,7 @@ public class DpsUnit : BaseUnit
         }
     }
 
+    private EnemyBehaviour currentTarget;
     void ExecuteAttack(List<EnemyBehaviour> enemies)
     {
         switch (attackType)
@@ -42,23 +43,32 @@ public class DpsUnit : BaseUnit
                 break;
 
             case AttackType.Single:
-                var target = enemies[0];
-                foreach (var e in enemies)
+                if (currentTarget == null || !enemies.Contains(currentTarget))
                 {
-                    if (Vector3.Distance(transform.position, e.transform.position) < Vector3.Distance(transform.position, target.transform.position))
-                        target = e;
+                    if (currentTarget != null && enemies.Contains(currentTarget))
+                    {
+                        int currentIndex = enemies.IndexOf(currentTarget);
+                        currentTarget = enemies[(currentIndex + 1) % enemies.Count];
+                    }
+                    else
+                    {
+                        currentTarget = enemies[0];
+                    }
                 }
+
                 // Create a line renderer effect for the single target attack
                 var attackFxInstance = Instantiate(singleAttackFx, transform.position, Quaternion.identity);
                 attackFxInstance.SetPosition(0, transform.position);
-                attackFxInstance.SetPosition(1, target.transform.position);
+                attackFxInstance.SetPosition(1, currentTarget.transform.position);
                 Destroy(attackFxInstance.gameObject, 0.2f);
-                target.TakeDamage(damage);
+                Vector3 direction = (currentTarget.transform.position - transform.position).normalized;
+                direction.y = 0;
+                transform.rotation = Quaternion.LookRotation(direction);
+                currentTarget.TakeDamage(damage);
 
                 break;
         }
     }
-
 
     public void ShowStats()
     {

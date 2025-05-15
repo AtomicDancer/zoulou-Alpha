@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -16,5 +17,6 @@ public abstract class BaseUnit : MonoBehaviour
         skillChargeBar.fillAmount = 0;
         skillReadyFxAura.Stop();
     }
+
 }
 
