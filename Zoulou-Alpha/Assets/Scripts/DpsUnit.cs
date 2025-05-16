@@ -13,6 +13,8 @@ public class DpsUnit : BaseUnit
     public AttackType attackType;
     private float timer;
     public LineRenderer singleAttackFx;
+    public bool canShoot;
+
     void Start()
     {
         rangeVisualPrefab.SetActive(false);
@@ -25,7 +27,7 @@ public class DpsUnit : BaseUnit
         if (timer <= 0f)
         {
             var enemies = GetEnemiesInRange();
-            if (enemies.Count > 0)
+            if (enemies.Count > 0 && canShoot)
             {
                 ExecuteAttack(enemies);
                 timer = attackCooldown;

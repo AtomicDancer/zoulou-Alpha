@@ -11,8 +11,10 @@ public class UnitGhost : MonoBehaviour
     {
         if (actualUnitPrefab.TryGetComponent<DpsUnit>(out DpsUnit dpsUnit))
         {
+            dpsUnit.canShoot = false;
             unitRange = dpsUnit.range;
         }
+        
         rangeVisual = Instantiate(rangeVisualPrefab, transform);
         UpdateRangeVisual();
     }
@@ -43,6 +45,7 @@ public class UnitGhost : MonoBehaviour
         {
             if (GameManager.Instance.playerMoney >= dpsUnit.cost)
             {
+                dpsUnit.canShoot = true;    
                 Instantiate(actualUnitPrefab, transform.position, Quaternion.identity);
                 Destroy(gameObject); 
                 GameManager.Instance.SpendMoney(dpsUnit.cost);

@@ -15,7 +15,8 @@ public class WarpGate : MonoBehaviour
         stocks -= stocksDamage; // Reduce current health by the damage amount
         if (stocks <= 0)
         {
-            //Mission failed
+            Debug.Log("WarpGate destroyed");
+            Destroy(gameObject); // Destroy the game object
         }
     }
 }

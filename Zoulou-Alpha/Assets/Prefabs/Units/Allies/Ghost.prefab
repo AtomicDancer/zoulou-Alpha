@@ -69,7 +69,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   actualUnitPrefab: {fileID: 3793735324019282489, guid: 44c67e5c9c7987a47967bf8e73e83596, type: 3}
   rangeVisualPrefab: {fileID: 7030695542935050475, guid: 06c39b8bf2bd3c344a19a4f0c21e627c, type: 3}
-  unitRange: 10
+  unitRange: 40
 --- !u!1001 &6067595378936953329
 PrefabInstance:
   m_ObjectHideFlags: 0
