@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 70a9473f2e65f154086b68ed29f9fe4e, type: 3}
+  m_Name: Level1Wave1
+  m_EditorClassIdentifier: 
+  waveChunks:
+  - enemyPrefab: {fileID: 668559143902179398, guid: 06bb800c6480d174da51750a0fa72177, type: 3}
+    lane: 0
+    count: 2
+    interval: 1
+    startDelay: 0
+  - enemyPrefab: {fileID: 668559143902179398, guid: 06bb800c6480d174da51750a0fa72177, type: 3}
+    lane: 0
+    count: 4
+    interval: 1
+    startDelay: 3
+  - enemyPrefab: {fileID: 668559143902179398, guid: 06bb800c6480d174da51750a0fa72177, type: 3}
+    lane: 0
+    count: 10
+    interval: 1
+    startDelay: 8
+  - enemyPrefab: {fileID: 668559143902179398, guid: 06bb800c6480d174da51750a0fa72177, type: 3}
+    lane: 0
+    count: 10
+    interval: 1
+    startDelay: 8
+  isHugeWave: 0
