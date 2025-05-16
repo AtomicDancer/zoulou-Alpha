@@ -14,8 +14,6 @@ public class UnitGhost : MonoBehaviour
             dpsUnit.canShoot = false;
             unitRange = dpsUnit.range;
         }
-        
-        rangeVisual = Instantiate(rangeVisualPrefab, transform);
         UpdateRangeVisual();
     }
 

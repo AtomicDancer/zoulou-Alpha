@@ -2,23 +2,21 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using TMPro;
-using System.Diagnostics.Tracing;
 
 public class UnitDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
     public GameObject unitGhostPrefab;
-    public Material validPlacementMaterial;
-    public Material invalidPlacementMaterial;
     public TextMeshProUGUI costText;
     private GameObject ghostInstance;
+    public Image unitIcon;
     private bool isDragging = false;
     void Start()
     {
-        if(unitGhostPrefab.GetComponent<UnitGhost>().actualUnitPrefab.TryGetComponent<DpsUnit>(out DpsUnit dpsUnit))
+        if (unitGhostPrefab.GetComponent<UnitGhost>().actualUnitPrefab.TryGetComponent<DpsUnit>(out DpsUnit dpsUnit))
         {
             costText.text = dpsUnit.cost + " $";
         }
-        else if(unitGhostPrefab.GetComponent<UnitGhost>().actualUnitPrefab.TryGetComponent<FarmUnit>(out FarmUnit farmUnit))
+        else if (unitGhostPrefab.GetComponent<UnitGhost>().actualUnitPrefab.TryGetComponent<FarmUnit>(out FarmUnit farmUnit))
         {
             costText.text = farmUnit.cost + " $";
         }
@@ -26,10 +24,12 @@ public class UnitDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, I
 
     void Update()
     {
-        if(Input.GetMouseButtonDown(1))
-        {
-            CancelPlacement();
-        }
+
+        
+        if (Input.GetMouseButtonDown(1))
+            {
+                CancelPlacement();
+            }
 
         if (Input.GetMouseButtonDown(0) && !isDragging)
         {
@@ -42,12 +42,69 @@ public class UnitDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, I
                     farm.ShowStats();
             }
         }
+
+        if (unitGhostPrefab.GetComponent<UnitGhost>().actualUnitPrefab.TryGetComponent<DpsUnit>(out DpsUnit dpsUnit))
+        {
+            if(dpsUnit.cost > GameManager.Instance.playerMoney)
+            {
+                costText.color = Color.red;
+            }
+            else
+            {
+                costText.color = Color.white;
+            }
+
+            if (SaveManager.Instance.IsUnitUnlocked(dpsUnit.unitName))
+            {
+                unitIcon.color = Color.white;
+            }
+            else
+            {
+                unitIcon.color = Color.red;
+            }
+        }
+        else if (unitGhostPrefab.GetComponent<UnitGhost>().actualUnitPrefab.TryGetComponent<FarmUnit>(out FarmUnit farmUnit))
+        {
+            if(farmUnit.cost > GameManager.Instance.playerMoney)
+            {
+                costText.color = Color.red;
+            }
+            else
+            {
+                costText.color = Color.white;
+            }
+
+            if (SaveManager.Instance.IsUnitUnlocked(farmUnit.unitName))
+            {
+                unitIcon.color = Color.white;
+            }
+            else
+            {
+                unitIcon.color = Color.red;
+            }
+        }
     }
 
     public void OnBeginDrag(PointerEventData eventData)
     {
+        string unitID = "";
+        GameObject actualUnit = unitGhostPrefab.GetComponent<UnitGhost>().actualUnitPrefab;
+        
+        if (actualUnit.TryGetComponent(out DpsUnit dps))
+            unitID = dps.unitName;
+        else if (actualUnit.TryGetComponent(out FarmUnit farm))
+            unitID = farm.unitName;
+
+
+        if (!SaveManager.Instance.IsUnitUnlocked(unitID))
+        {
+            Debug.Log("Unit is locked and cannot be dragged.");
+            return;
+        }
+
         ghostInstance = Instantiate(unitGhostPrefab);
     }
+
 
     public void OnDrag(PointerEventData eventData)
     {
@@ -58,16 +115,8 @@ public class UnitDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, I
             if (worldPos != Vector3.negativeInfinity)
             {
                 ghostInstance.transform.position = worldPos;
-
-                if (IsValidPlacement(worldPos))
-                {
-                    SetGhostMaterial(validPlacementMaterial);
-                }
             }
-            else
-            {
-                SetGhostMaterial(invalidPlacementMaterial);
-            }
+         
         }
     }
 

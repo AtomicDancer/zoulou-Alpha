@@ -157,6 +157,7 @@ MonoBehaviour:
   attackCooldown: 0.5
   attackType: 1
   singleAttackFx: {fileID: 3307711019588668513, guid: 02ac1bca87a196640a481d3d7f5fda07, type: 3}
+  canShoot: 0
 --- !u!114 &7332887476187827793
 MonoBehaviour:
   m_ObjectHideFlags: 0

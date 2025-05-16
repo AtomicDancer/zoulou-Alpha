@@ -1,4 +1,5 @@
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,37 +8,97 @@ public class DisplayUnits : MonoBehaviour
     public GameObject prefabToShow;
     public TextMeshProUGUI unitName;
     public TextMeshProUGUI costText;
-
+    public int costToBuy;
+    public TextMeshProUGUI costToBuyText;
+    public Button buyButton;
+    public Image unitIcon;
+    public Image unitIconBackground;
     [Header("Stats Text")]
     public TextMeshProUGUI damageText;
     public TextMeshProUGUI attackSpeedText;
     public TextMeshProUGUI rangeText;
     public TextMeshProUGUI costToDeployText;
     private bool isShowing = false;
+    private string unitID;
+    private bool isUnlocked;
     private DpsUnit dpsUnit;
     private FarmUnit farmUnit;
+
     void Start()
     {
-        prefabToShow.TryGetComponent<DpsUnit>(out dpsUnit);
-        prefabToShow.TryGetComponent<FarmUnit>(out FarmUnit farmUnit);
+        prefabToShow.TryGetComponent(out dpsUnit);
+        prefabToShow.TryGetComponent(out farmUnit);
+
+        unitID = dpsUnit != null ? dpsUnit.unitName : farmUnit.unitName;
+        isUnlocked = SaveManager.Instance.IsUnitUnlocked(unitID);
+
 
         if (dpsUnit != null)
         {
-            prefabToShow.name = dpsUnit.unitName;
-            costText.text = dpsUnit.cost.ToString() + " $";
+            unitID = dpsUnit.unitName;
+            //unitIcon.sprite = dpsUnit.icon;
+            costText.text = costToBuy + " $";
         }
         else if (farmUnit != null)
         {
-            prefabToShow.name = farmUnit.unitName;
-
-            costText.text = farmUnit.cost.ToString() + " $";
+            unitID = farmUnit.unitName;
+            //unitIcon.sprite = farmUnit.icon;
+            costText.text = costToBuy + " $";
         }
+
         prefabToShow.SetActive(false);
+
+        buyButton.gameObject.SetActive(!isUnlocked);
+        buyButton.interactable = !isUnlocked; // Enable button for units not bought yet
+
+        buyButton.onClick.AddListener(() =>
+        {
+            if (!isShowing) // Ensure only the shown unit can be purchased
+            {
+                return;
+            }
+
+            int cost = costToBuy;
+
+            if (SaveManager.Instance.SpendMoney(cost))
+            {
+                SaveManager.Instance.UnlockUnit(unitID);
+                isUnlocked = true;
+                buyButton.gameObject.SetActive(false);
+            }
+            else
+            {
+                Debug.Log("Not enough money");
+            }
+        });
     }
 
     void Update()
     {
-        prefabToShow.transform.Rotate(Vector3.up * Time.deltaTime * 30f);
+        if(SaveManager.Instance.CurrentSave.playerMoney < costToBuy)
+        {
+            costText.color = Color.red;
+        }
+        else
+        {
+            costText.color = Color.white;
+        }
+
+        if (isUnlocked)
+        {
+            unitIconBackground.color = Color.white;
+            costText.gameObject.SetActive(false);
+        }
+        else
+        {
+            unitIconBackground.color = Color.grey;
+            costText.gameObject.SetActive(true);
+        }
+
+        if (isShowing)
+        {
+            prefabToShow.transform.Rotate(Vector3.up * Time.deltaTime * 30f);
+        }
     }
 
     public void ShowUnit()
@@ -64,7 +125,7 @@ public class DisplayUnits : MonoBehaviour
         dpsUnit = prefabToShow.GetComponent<DpsUnit>();
         farmUnit = prefabToShow.GetComponent<FarmUnit>();
 
-        // Update stats based on new assignment
+        // Update stats for the selected unit
         if (dpsUnit != null)
         {
             damageText.text = dpsUnit.damage.ToString();
@@ -79,6 +140,10 @@ public class DisplayUnits : MonoBehaviour
             rangeText.text = farmUnit.range.ToString();
             costToDeployText.text = farmUnit.cost + " $";
         }
+
+        buyButton.gameObject.SetActive(!isUnlocked);
+        buyButton.interactable = !isUnlocked; // Enable button for units not bought yet
+        costToBuyText.text = costToBuy + " $";
 
         unitName.text = prefabToShow.name;
         prefabToShow.SetActive(true);
