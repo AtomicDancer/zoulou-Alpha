@@ -7,20 +7,22 @@ public class WaveDataNew : ScriptableObject
     public List<EnemyWaveChunk> waveChunks;
     public bool isHugeWave;
 
-    // Expands chunks into individual spawn instructions
     public List<EnemySpawnInfo> ExpandChunks()
     {
         var spawnList = new List<EnemySpawnInfo>();
         foreach (var chunk in waveChunks)
         {
-            for (int i = 0; i < chunk.count; i++)
+            for (int r = 0; r < Mathf.Max(1, chunk.repeat); r++)
             {
-                spawnList.Add(new EnemySpawnInfo
+                for (int i = 0; i < chunk.count; i++)
                 {
-                    enemyPrefab = chunk.enemyPrefab,
-                    lane = chunk.lane,
-                    delay = chunk.startDelay + i * chunk.interval
-                });
+                    spawnList.Add(new EnemySpawnInfo
+                    {
+                        enemyPrefab = chunk.enemyPrefab,
+                        lane = chunk.lane,
+                        delay = chunk.startDelay + r * chunk.delayBetweenRepeats + i * chunk.interval
+                    });
+                }
             }
         }
         return spawnList;
@@ -35,6 +37,8 @@ public class EnemyWaveChunk
     public int count = 1;
     public float interval = 1f;
     public float startDelay = 0f;
+    public int repeat = 1;
+    public float delayBetweenRepeats = 0f;
 }
 
 [System.Serializable]
