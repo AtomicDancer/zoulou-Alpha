@@ -10,35 +10,21 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 70a9473f2e65f154086b68ed29f9fe4e, type: 3}
-  m_Name: Level1Wave1
+  m_Name: Gym
   m_EditorClassIdentifier: 
   waveChunks:
-  - enemyPrefab: {fileID: 668559143902179398, guid: e340cb31f5d56e34abf596917c302119, type: 3}
-    lane: 0
-    count: 2
-    interval: 1
-    startDelay: 0
-    repeat: 1
-    delayBetweenRepeats: 0
   - enemyPrefab: {fileID: 668559143902179398, guid: 06bb800c6480d174da51750a0fa72177, type: 3}
     lane: 0
-    count: 4
+    count: 15
     interval: 1
-    startDelay: 3
-    repeat: 1
-    delayBetweenRepeats: 0
-  - enemyPrefab: {fileID: 668559143902179398, guid: e340cb31f5d56e34abf596917c302119, type: 3}
-    lane: 0
-    count: 10
-    interval: 1
-    startDelay: 8
-    repeat: 1
-    delayBetweenRepeats: 0
+    startDelay: 2
+    repeat: 5
+    delayBetweenRepeats: 15
   - enemyPrefab: {fileID: 668559143902179398, guid: 06bb800c6480d174da51750a0fa72177, type: 3}
-    lane: 0
-    count: 10
+    lane: 1
+    count: 15
     interval: 1
-    startDelay: 8
-    repeat: 1
-    delayBetweenRepeats: 0
+    startDelay: 5
+    repeat: 5
+    delayBetweenRepeats: 15
   isHugeWave: 0

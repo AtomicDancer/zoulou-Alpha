@@ -95,10 +95,8 @@ public class DisplayUnits : MonoBehaviour
             costText.gameObject.SetActive(true);
         }
 
-        if (isShowing)
-        {
-            prefabToShow.transform.Rotate(Vector3.up * Time.deltaTime * 30f);
-        }
+        prefabToShow.transform.Rotate(Vector3.up * Time.deltaTime * 30f);
+
     }
 
     public void ShowUnit()
